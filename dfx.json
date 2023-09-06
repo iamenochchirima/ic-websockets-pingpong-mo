@@ -1,0 +1,29 @@
+{
+  "canisters": {
+    "pingpong_backend": {
+      "main": "src/pingpong_backend/main.mo",
+      "type": "motoko"
+    },
+    "pingpong_frontend": {
+      "dependencies": [
+        "pingpong_backend"
+      ],
+      "frontend": {
+        "entrypoint": "src/pingpong_frontend/src/index.html"
+      },
+      "source": [
+        "src/pingpong_frontend/assets",
+        "dist/pingpong_frontend/"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": "mops sources"
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
