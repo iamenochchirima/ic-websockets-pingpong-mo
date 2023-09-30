@@ -8,9 +8,9 @@ import Bool "mo:base/Bool";
 
 actor {
   // Paste here the principal of the gateway obtained when running the gateway
-   let gateway_principal : Text = "lg3nb-si435-jnrox-6qdrd-i6tuh-73huj-vg32b-l3cqf-kpyf4-7c6zg-nae";
+  //  let gateway_principal : Text = "lg3nb-si435-jnrox-6qdrd-i6tuh-73huj-vg32b-l3cqf-kpyf4-7c6zg-nae";
 
-  // let gateway_principal : Text = "jkhgq-q7bza-ztzvn-swx6g-dgkdp-24g7z-54mt2-2edmj-7j4n7-x7qnj-oqe";
+  let gateway_principal : Text = "jkhgq-q7bza-ztzvn-swx6g-dgkdp-24g7z-54mt2-2edmj-7j4n7-x7qnj-oqe";
 
  type AppMessage = {
     message : Text;
