@@ -1,4 +1,4 @@
-# IC WebSocket example - A simple pingpong
+# IC WebSocket example - A simple pingpong - Motoko backend
 
 This is an example of how to use IC WebSockets to send and receive messages between the frontend (browser) and the backend canister.
 
