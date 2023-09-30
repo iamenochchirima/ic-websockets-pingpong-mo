@@ -1,7 +1,4 @@
-import React, { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PingPong from "./Components/PingPong";
-import { ws } from "./utils/ws";
 import Header from "./Components/Header";
 
 const App = () => {

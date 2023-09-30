@@ -1,4 +1,4 @@
-import IcWebSocketCdk "mo:ic-websocket-cdk";
+import IcWebSocketCdk "mo:ic-websocket-cdk-mo";
 import Text "mo:base/Text";
 import Debug "mo:base/Debug";
 import HashMap "mo:base/HashMap";
@@ -8,9 +8,9 @@ import Bool "mo:base/Bool";
 
 actor {
   // Paste here the principal of the gateway obtained when running the gateway
-  // let gateway_principal : Text = "3656s-3kqlj-dkm5d-oputg-ymybu-4gnuq-7aojd-w2fzw-5lfp2-4zhx3-4ae";
+   let gateway_principal : Text = "lg3nb-si435-jnrox-6qdrd-i6tuh-73huj-vg32b-l3cqf-kpyf4-7c6zg-nae";
 
-  let gateway_principal : Text = "jkhgq-q7bza-ztzvn-swx6g-dgkdp-24g7z-54mt2-2edmj-7j4n7-x7qnj-oqe";
+  // let gateway_principal : Text = "jkhgq-q7bza-ztzvn-swx6g-dgkdp-24g7z-54mt2-2edmj-7j4n7-x7qnj-oqe";
 
  type AppMessage = {
     message : Text;
@@ -19,11 +19,11 @@ actor {
   var ws_state = IcWebSocketCdk.IcWebSocketState(gateway_principal);
 
   /// A custom function to send the message to the client
-  func send_app_message(client_key : IcWebSocketCdk.ClientPublicKey, msg : AppMessage): async () {
+  func send_app_message(client_principal : IcWebSocketCdk.ClientPrincipal, msg : AppMessage): async () {
     Debug.print("Sending message: " # debug_show (msg));
 
     // here we call the ws_send from the CDK!!
-    switch (await IcWebSocketCdk.ws_send(ws_state, client_key, to_candid(msg))) {
+    switch (await IcWebSocketCdk.ws_send(ws_state, client_principal, to_candid(msg))) {
       case (#Err(err)) {
         Debug.print("Could not send message:" # debug_show (#Err(err)));
       };
@@ -35,7 +35,7 @@ actor {
     let message : AppMessage = {
       message = "Ping";
     };
-    await send_app_message(args.client_key, message);
+    await send_app_message(args.client_principal, message);
   };
 
   /// The custom logic is just a ping-pong message exchange between frontend and canister.
@@ -55,29 +55,29 @@ actor {
 
     Debug.print("Received message: " # debug_show (new_msg));
 
-    await send_app_message(args.client_key, new_msg);
+    await send_app_message(args.client_principal, new_msg);
   };
 
   func on_close(args : IcWebSocketCdk.OnCloseCallbackArgs) : async () {
-    Debug.print("Client " # debug_show (args.client_key) # " disconnected");
+    Debug.print("Client " # debug_show (args.client_principal) # " disconnected");
   };
 
-  let handlers = IcWebSocketCdk.WsHandlers(
+ let handlers = IcWebSocketCdk.WsHandlers(
     ?on_open,
     ?on_message,
     ?on_close,
   );
 
-  var ws = IcWebSocketCdk.IcWebSocket(handlers, ws_state);
+  let params = IcWebSocketCdk.WsInitParams(
+    ws_state,
+    handlers,
+
+  );
+  var ws = IcWebSocketCdk.IcWebSocket(params);
 
   system func postupgrade() {
     ws_state := IcWebSocketCdk.IcWebSocketState(gateway_principal);
-    ws := IcWebSocketCdk.IcWebSocket(handlers, ws_state);
-  };
-
-  // method called by the client SDK when instantiating a new IcWebSocket
-  public shared ({ caller }) func ws_register(args : IcWebSocketCdk.CanisterWsRegisterArguments) : async IcWebSocketCdk.CanisterWsRegisterResult {
-    await ws.ws_register(caller, args);
+     ws := IcWebSocketCdk.IcWebSocket(params);
   };
 
   // method called by the WS Gateway after receiving FirstMessage from the client
