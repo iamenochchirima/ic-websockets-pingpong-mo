@@ -1,4 +1,4 @@
-import IcWebSocketCdk "mo:ic-websocket-cdk-mo";
+import IcWebSocketCdk "mo:ic-websocket-cdk";
 import Text "mo:base/Text";
 import Debug "mo:base/Debug";
 import HashMap "mo:base/HashMap";
