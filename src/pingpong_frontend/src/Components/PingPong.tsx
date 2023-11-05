@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { BsArrowDown, BsArrowUp } from "react-icons/bs";
-import { deserializeAppMessage, serializeAppMessage } from "../utils/idl";
 import { ws } from "../utils/ws";
 
 type AppMessage = {
@@ -43,7 +42,7 @@ const PingPong = () => {
     ws.onmessage = async (event) => {
       try {
         setIsActive(true);
-        const recievedMessage: AppMessage = deserializeAppMessage(event.data);
+        const recievedMessage: AppMessage = event.data;
 
         const fromBackendMessage: uiMessage = {
           from: "backend",
@@ -57,7 +56,7 @@ const PingPong = () => {
           sendMessage();
         }, 1000);
       } catch (error) {
-        console.log("Error deserializing message", error);
+        console.log("Error recievinf message", error);
       }
     };
   }, []);
@@ -68,7 +67,7 @@ const PingPong = () => {
         message: "pong",
       };
 
-      await ws.send(serializeAppMessage(sentMessage));
+      ws.send(sentMessage);
       const fromFrontendMessage: uiMessage = {
         from: "frontend",
         message: sentMessage,

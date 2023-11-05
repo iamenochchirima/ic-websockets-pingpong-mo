@@ -1,5 +1,5 @@
 import IcWebSocket, { generateRandomIdentity } from "ic-websocket-js";
-import { canisterId } from "../../../declarations/pingpong_backend";
+import { canisterId, pingpong_backend } from "../../../declarations/pingpong_backend";
 
 // Production
 // const gatewayUrl = "wss://gateway.icws.io";
@@ -12,6 +12,7 @@ const icUrl = "http://127.0.0.1:4943";
 
 export const ws = new IcWebSocket(gatewayUrl, undefined, {
   canisterId: canisterId,
+  canisterActor: pingpong_backend,
   identity: generateRandomIdentity(),
   networkUrl: icUrl,
 });
