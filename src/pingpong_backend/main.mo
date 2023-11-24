@@ -8,15 +8,15 @@ import Bool "mo:base/Bool";
 
 actor {
   // Paste here the principal of the gateway obtained when running the gateway
-  //  let gateway_principal : Text = "3656s-3kqlj-dkm5d-oputg-ymybu-4gnuq-7aojd-w2fzw-5lfp2-4zhx3-4ae";
+   let gateway_principal : Text = "3656s-3kqlj-dkm5d-oputg-ymybu-4gnuq-7aojd-w2fzw-5lfp2-4zhx3-4ae";
 
-  let gateway_principal : Text = "4vckx-bhbmz-uu3yz-ll4ug-alzch-fifj3-r4ufc-g4nfn-7fz5s-xwo2m-pqe";
+  // let gateway_principal : Text = "4vckx-bhbmz-uu3yz-ll4ug-alzch-fifj3-r4ufc-g4nfn-7fz5s-xwo2m-pqe";
 
  type AppMessage = {
     message : Text;
   };
 
-  var ws_state = IcWebSocketCdk.IcWebSocketState(gateway_principal);
+  var ws_state = IcWebSocketCdk.IcWebSocketState([gateway_principal]);
 
   /// A custom function to send the message to the client
   func send_app_message(client_principal : IcWebSocketCdk.ClientPrincipal, msg : AppMessage): async () {
@@ -77,7 +77,7 @@ actor {
   var ws = IcWebSocketCdk.IcWebSocket(ws_state, params);
 
   system func postupgrade() {
-    ws_state := IcWebSocketCdk.IcWebSocketState(gateway_principal);
+    ws_state := IcWebSocketCdk.IcWebSocketState([gateway_principal]);
      ws := IcWebSocketCdk.IcWebSocket(ws_state, params);
   };
 
