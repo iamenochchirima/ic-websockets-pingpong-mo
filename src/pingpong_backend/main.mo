@@ -1,4 +1,6 @@
 import IcWebSocketCdk "mo:ic-websocket-cdk";
+import IcWebSocketCdkState "mo:ic-websocket-cdk/State";
+import IcWebSocketCdkTypes "mo:ic-websocket-cdk/Types";
 import Text "mo:base/Text";
 import Debug "mo:base/Debug";
 import HashMap "mo:base/HashMap";
@@ -7,16 +9,10 @@ import Blob "mo:base/Blob";
 import Bool "mo:base/Bool";
 
 actor {
-  // Paste here the principal of the gateway obtained when running the gateway
-   let gateway_principal : Text = "3656s-3kqlj-dkm5d-oputg-ymybu-4gnuq-7aojd-w2fzw-5lfp2-4zhx3-4ae";
-
-  // let gateway_principal : Text = "4vckx-bhbmz-uu3yz-ll4ug-alzch-fifj3-r4ufc-g4nfn-7fz5s-xwo2m-pqe";
 
  type AppMessage = {
     message : Text;
   };
-
-  var ws_state = IcWebSocketCdk.IcWebSocketState([gateway_principal]);
 
   /// A custom function to send the message to the client
   func send_app_message(client_principal : IcWebSocketCdk.ClientPrincipal, msg : AppMessage): async () {
@@ -62,24 +58,16 @@ actor {
     Debug.print("Client " # debug_show (args.client_principal) # " disconnected");
   };
 
- let handlers = IcWebSocketCdk.WsHandlers(
+  let params = IcWebSocketCdkTypes.WsInitParams(null, null, null);
+  let ws_state = IcWebSocketCdkState.IcWebSocketState(params);
+
+  let handlers = IcWebSocketCdkTypes.WsHandlers(
     ?on_open,
     ?on_message,
     ?on_close,
   );
 
-  let params = IcWebSocketCdk.WsInitParams(
-    handlers,
-    null,
-    null,
-    null,
-  );
-  var ws = IcWebSocketCdk.IcWebSocket(ws_state, params);
-
-  system func postupgrade() {
-    ws_state := IcWebSocketCdk.IcWebSocketState([gateway_principal]);
-     ws := IcWebSocketCdk.IcWebSocket(ws_state, params);
-  };
+  let ws = IcWebSocketCdk.IcWebSocket(ws_state, params, handlers);
 
   // method called by the WS Gateway after receiving FirstMessage from the client
   public shared ({ caller }) func ws_open(args : IcWebSocketCdk.CanisterWsOpenArguments) : async IcWebSocketCdk.CanisterWsOpenResult {
