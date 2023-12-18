@@ -18,8 +18,8 @@ actor {
   func send_app_message(client_principal : IcWebSocketCdk.ClientPrincipal, msg : AppMessage): async () {
     Debug.print("Sending message: " # debug_show (msg));
 
-    // here we call the ws_send from the CDK!!
-    switch (await IcWebSocketCdk.ws_send(ws_state, client_principal, to_candid(msg))) {
+    // here we call the send from the CDK!!
+    switch (await IcWebSocketCdk.send(ws_state, client_principal, to_candid(msg))) {
       case (#Err(err)) {
         Debug.print("Could not send message:" # debug_show (#Err(err)));
       };
@@ -58,7 +58,7 @@ actor {
     Debug.print("Client " # debug_show (args.client_principal) # " disconnected");
   };
 
-  let params = IcWebSocketCdkTypes.WsInitParams(null, null, null);
+  let params = IcWebSocketCdkTypes.WsInitParams(null, null);
   let ws_state = IcWebSocketCdkState.IcWebSocketState(params);
 
   let handlers = IcWebSocketCdkTypes.WsHandlers(
