@@ -1,0 +1,14 @@
+[dependencies]
+base = "0.11.1"
+xtended-numbers = "0.3.1"
+
+[package]
+name = "cbor"
+version = "1.0.0"
+description = "A CBOR library for encoding and decoding CBOR bytes"
+repository = "https://github.com/edjcase/motoko_cbor"
+keywords = [ "cbor", "encoding" ]
+license = "MIT"
+
+[dev-dependencies]
+test = "2.0.0"
