@@ -3,10 +3,6 @@ import IcWebSocketCdkState "mo:ic-websocket-cdk/State";
 import IcWebSocketCdkTypes "mo:ic-websocket-cdk/Types";
 import Text "mo:base/Text";
 import Debug "mo:base/Debug";
-import HashMap "mo:base/HashMap";
-import Buffer "mo:base/Buffer";
-import Blob "mo:base/Blob";
-import Bool "mo:base/Bool";
 
 actor {
 
