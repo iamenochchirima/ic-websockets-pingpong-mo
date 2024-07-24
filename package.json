@@ -16,6 +16,10 @@
     "src/pingpong_frontend"
   ],
   "dependencies": {
-    "ic-websocket-js": "^0.4.0"
+    "ic-websocket-js": "^0.4.0",
+    "idb": "^8.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.12"
   }
 }
