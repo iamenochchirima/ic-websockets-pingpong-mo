@@ -1,4 +1,4 @@
-import IcWebSocket, { generateRandomIdentity } from "ic-websocket-js";
+import { IcWebSocket, generateRandomIdentity } from "ic-websocket-js";
 import { canisterId, pingpong_backend } from "../../../declarations/pingpong_backend";
 
 // Production
